@@ -72,6 +72,11 @@ print(f"Scraped Job Title: {web_data['job_role']}\nDescription: {web_data['job_d
 df = pd.DataFrame([web_data])
 existing_df = pd.read_json('UK_jobs/UK_job_applications.json')
 new_df = pd.concat([existing_df, df])
-new_df.to_json("UK_jobs/UK_job_applications.json", orient='records')
+# sort the df based on end_date
+new_df['end_date_2'] = pd.to_datetime(new_df['end_date'], format='%d-%b-%Y')
+new_df = new_df.sort_values(by=['applied', 'end_date_2'])
+new_df.drop('end_date_2', inplace=True, axis=1)
+
+new_df.to_json("UK_jobs/UK_job_applications.json", orient='records', indent=2)
 
 print("Data saved to the JSON.")
