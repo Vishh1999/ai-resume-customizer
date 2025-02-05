@@ -52,6 +52,7 @@ def scrape_webpage(url, company_name):
     job_role = soup.title.get_text()
     job_role = job_role.replace("- Careers & Employability Service", '')
     job_details = soup.find("div", {"class": 'job-details-body'}).text.strip()
+    job_details = job_details.replace("About this role", '')
     end_date = soup.find("strong").get_text(strip=True)
     return {"company_name": company_name,
             "job_role": job_role, "job_details": job_details, "end_date": end_date,
